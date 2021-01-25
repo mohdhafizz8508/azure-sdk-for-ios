@@ -102,9 +102,9 @@ public final class Chat {
                 if [401].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Unauthorized.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -115,9 +115,9 @@ public final class Chat {
                 if [403].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Forbidden.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -128,9 +128,9 @@ public final class Chat {
                 if [429].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Too many requests.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -141,9 +141,12 @@ public final class Chat {
                 if [503].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(
+                                .failure(AzureError.service("Service unavailable.", decoded)),
+                                httpResponse
+                            )
                         }
                     } catch {
                         dispatchQueue.async {
@@ -241,9 +244,9 @@ public final class Chat {
                 if [401].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Unauthorized.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -254,9 +257,9 @@ public final class Chat {
                 if [403].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Forbidden.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -267,9 +270,9 @@ public final class Chat {
                 if [429].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Too many requests.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -280,9 +283,12 @@ public final class Chat {
                 if [503].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(
+                                .failure(AzureError.service("Service unavailable.", decoded)),
+                                httpResponse
+                            )
                         }
                     } catch {
                         dispatchQueue.async {
@@ -369,9 +375,9 @@ public final class Chat {
                 if [401].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Unauthorized.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -382,9 +388,9 @@ public final class Chat {
                 if [403].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Forbidden.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -395,9 +401,9 @@ public final class Chat {
                 if [429].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Too many requests.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -408,9 +414,12 @@ public final class Chat {
                 if [503].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(
+                                .failure(AzureError.service("Service unavailable.", decoded)),
+                                httpResponse
+                            )
                         }
                     } catch {
                         dispatchQueue.async {
@@ -492,9 +501,9 @@ public final class Chat {
                 if [401].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Unauthorized.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -505,9 +514,9 @@ public final class Chat {
                 if [403].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Forbidden.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -518,9 +527,9 @@ public final class Chat {
                 if [429].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(.failure(AzureError.service("Too many requests.", decoded)), httpResponse)
                         }
                     } catch {
                         dispatchQueue.async {
@@ -531,9 +540,12 @@ public final class Chat {
                 if [503].contains(statusCode) {
                     do {
                         let decoder = JSONDecoder()
-                        let decoded = try decoder.decode(ErrorType.self, from: data)
+                        let decoded = try decoder.decode(CommunicationErrorResponse.self, from: data)
                         dispatchQueue.async {
-                            completionHandler(.failure(AzureError.service("", decoded)), httpResponse)
+                            completionHandler(
+                                .failure(AzureError.service("Service unavailable.", decoded)),
+                                httpResponse
+                            )
                         }
                     } catch {
                         dispatchQueue.async {

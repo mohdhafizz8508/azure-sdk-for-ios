@@ -33,7 +33,7 @@ public class ChatClient {
     // MARK: Properties
 
     private let endpoint: String
-    private let credential: CommunicationUserCredential
+    private let credential: CommunicationTokenCredential
     private let options: AzureCommunicationChatClientOptions
     private let service: Chat
     private var signalingClient: CommunicationSignalingClient?
@@ -48,7 +48,7 @@ public class ChatClient {
     ///   - options: Options used to configure the client.
     public init(
         endpoint: String,
-        credential: CommunicationUserCredential,
+        credential: CommunicationTokenCredential,
         withOptions options: AzureCommunicationChatClientOptions
     ) throws {
         self.endpoint = endpoint
@@ -59,7 +59,8 @@ public class ChatClient {
             throw AzureError.client("Unable to form base URL.")
         }
 
-        let authPolicy = CommunicationUserCredentialPolicy(credential: credential)
+        let communicationCredential = CommunicationPolicyTokenCredential(credential)
+        let authPolicy = BearerTokenCredentialPolicy(credential: communicationCredential, scopes: [])
 
         let client = try AzureCommunicationChatClient(
             endpoint: endpointUrl,
@@ -69,20 +70,7 @@ public class ChatClient {
 
         self.service = client.chat
 
-        var token: String?
-
-        credential.token(completionHandler: {(communicationAccessToken, _)
-            in
-            if communicationAccessToken != nil {
-                token = communicationAccessToken!.token
-            }
-        })
-
-        if token != nil {
-            self.signalingClient = getSignalingClient(token: token!)
-        } else {
-            self.signalingClient = nil
-        }
+        self.signalingClient = getSignalingClient(credential: credential)
     }
 
     // MARK: Public Methods
@@ -110,17 +98,12 @@ public class ChatClient {
         completionHandler: @escaping HTTPResultHandler<CreateChatThreadResult>
     ) {
         service.create(chatThread: thread, withOptions: options) { result, httpResponse in
-            do {
-                switch result {
-                case let .success(chatThreadResult):
-                    completionHandler(.success(chatThreadResult), httpResponse)
+            switch result {
+            case let .success(chatThreadResult):
+                completionHandler(.success(chatThreadResult), httpResponse)
 
-                case let .failure(error):
-                    throw error
-                }
-            } catch {
-                let azureError = AzureError.client("Failed to create ChatThread.", error)
-                completionHandler(.failure(azureError), httpResponse)
+            case let .failure(error):
+                completionHandler(.failure(error), httpResponse)
             }
         }
     }
@@ -190,7 +173,7 @@ public class ChatClient {
     /// Call this function before subscribing to any event.
     public func startRealTimeNotifications () {
         if self.signalingClient == nil {
-            print("no signaling client is initialized")
+            options.logger.error("no signaling client is initialized")
         }
         if self.isRealtimeNotificationsStarted {
             return
@@ -204,7 +187,7 @@ public class ChatClient {
     /// This function would unsubscribe to all events.
     public func stopRealTimeNotifications () {
         if self.signalingClient == nil {
-            print("no signaling client is initialized")
+            options.logger.error("no signaling client is initialized")
         }
         self.isRealtimeNotificationsStarted = false
         self.signalingClient?.stop()
@@ -213,7 +196,7 @@ public class ChatClient {
     /// Subscribe to chat events
     public func on (event: String, listener:  @escaping EventListener) {
         guard let _ =  ChatEventId(rawValue: event) else {
-            print("the event id provided is not supported")
+            options.logger.error("the event id provided is not supported")
             return
         }
         self.signalingClient?.on(event: event, listener: listener)

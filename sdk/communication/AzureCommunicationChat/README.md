@@ -50,7 +50,7 @@ specifying the clone URL of this repository and the version specifier you wish t
 ```swift
     dependencies: [
         ...
-        .package(url: "https://github.com/Azure/azure-sdk-for-ios.git", from: "1.0.0-beta.5")
+        .package(url: "https://github.com/Azure/azure-sdk-for-ios.git", from: "1.0.0-beta.7")
     ],
 ```
 
@@ -88,7 +88,7 @@ platform :ios, '12.0'
 use_frameworks!
 
 target 'MyTarget' do
-  pod 'AzureCommunicationChat', '~> 1.0.0-beta.5'
+  pod 'AzureCommunicationChat', '~> 1.0.0-beta.7'
   ...
 end
 ```
@@ -125,8 +125,8 @@ let endpoint = "<communication_resource_endpoint>"
 let credential = try CommunicationUserCredential(<"user_access_token>")
 
 let options = AzureCommunicationChatClientOptions(
-    logger: ClientLoggers.default,
-    dispatchQueue: self.queue
+	logger: ClientLoggers.default,
+	dispatchQueue: self.queue
 )
 
 let chatClient = ChatClient(endpoint: endpoint, credential: credential, withOptions: options)
@@ -243,8 +243,8 @@ let options = ListChatThreadsOptions(maxPageSize: 1)
 chatClient.listThreads(withOptions: options) { result, _ in
     switch result {
     case let .success(listThreadsResponse):
-        let threads = listThreadsResponse.items
-        threads?.forEach { thread in
+        var iterator = listThreadsResponse.syncIterator
+        while let threadInfo = iterator.next() {
             // Take further action
         }
 
@@ -253,8 +253,6 @@ chatClient.listThreads(withOptions: options) { result, _ in
     }
 }
 ```
-
-You can fetch more data using the `nextPage()` method of `PagedCollection`.
 
 
 #### Delete a thread
@@ -282,7 +280,6 @@ chatClient.delete(thread: threadId) { result, httpResponse in
 Use the `send` method of `ChatThreadClient` to send a message to a thread.
 
 - `SendChatMessageRequest` is the model to pass to this method.
-- `priority` is used to specify the message priority level, such as 'normal' or 'high', if not specified, 'normal' will be set.
 - `content`, required, is used to provide the chat message content.
 - `senderDisplayName` is used to specify the display name of the sender, if not specified, an empty name will be set.
 - `type` is the type of message being sent, the supported types are text and html.
@@ -291,7 +288,6 @@ Use the `send` method of `ChatThreadClient` to send a message to a thread.
 
 ```swift
 let message = SendChatMessageRequest(
-    priority: ChatMessagePriority.high,
     content: "Test message 1",
     senderDisplayName: "An Important person"
 )
@@ -351,8 +347,8 @@ if let date = dateFormatter.date(from: "2020-08-27T17:55:50Z") {
 client.listMessages(withOptions: options) { result, _ in
     switch result {
     case let .success(listMessagesResponse):
-        let messages = listMessagesResponse.items
-        messages?.forEach { message in
+        var iterator = listMessagesResponse.syncIterator
+        while let message = iterator.next() {
             // Take further action
         }
 
@@ -362,14 +358,11 @@ client.listMessages(withOptions: options) { result, _ in
 }
 ```
 
-You can fetch more data using the `nextPage()` method of `PagedCollection`.
-
 #### Update a message
 
 Use the `update` method of `ChatThreadClient` to update a message in a thread.
 
 - `UpdateChatMessageRequest` is the model to pass to this method.
-- `priority` is the chat message priority `ChatMessagePriority`, such as 'Normal' or 'High', if not specified, 'Normal' will be set.
 - `content` is the message content to be updated.
 - `chatMessageId` is the unique ID of the message.
 
@@ -422,8 +415,8 @@ Use the `listParticipants` of `ChatThreadClient` method to retrieve the particip
 chatThreadClient.listParticipants() { result, _ in
     switch result {
     case let .success(threadParticipants):
-        let participants = threadParticipants.items
-        participants?.forEach { participant in
+        var iterator = threadParticipants.syncIterator
+        while let threadParticipants = iterator.next() {
             // Take further action
         }
 
@@ -432,8 +425,6 @@ chatThreadClient.listParticipants() { result, _ in
     }
 }
 ```
-
-You can fetch more data using the `nextPage()` method of `PagedCollection`.
 
 #### Add thread participants
 
@@ -523,9 +514,9 @@ Use the `listReadReceipts` method of `ChatThreadClient` to retrieve read receipt
 ```swift
 chatThreadClient.listReadReceipts() { result, _ in
     switch result {
-    case let .success(readReceiptsResponse):
-        let readReceipts = readReceiptsResponse.items
-        readReceipts?.forEach { readReceipt in
+    case let .success(readReceipts):
+        var iterator = readReceipts.syncIterator
+        while let readReceipt = iterator.next() {
             // Take further action
         }
 
@@ -534,8 +525,6 @@ chatThreadClient.listReadReceipts() { result, _ in
     }
 }
 ```
-
-You can fetch more data using the `nextPage()` method of `PagedCollection`.
 
 ### Thread Update Operations
 
