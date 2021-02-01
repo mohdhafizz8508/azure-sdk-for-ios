@@ -112,8 +112,17 @@ public class URLSessionTransport: TransportStage {
             let allowedStatusCodes = responseContext?.value(forKey: .allowedStatusCodes) as? [Int] ?? [200]
             if !allowedStatusCodes.contains(statusCode) {
                 // do not add the inner error, as it may require decoding from XML.
+                let statusError = StatusCodeError(
+                    status: Int32(statusCode),
+                    message: "Service returned invalid status code [\(statusCode)]."
+                )
+                // encode the error as data so it can be deserialized by client
                 let error = AzureError.service("Service returned invalid status code [\(statusCode)].", nil)
+                if httpResponse.data?.count ?? 0 == 0 {
+                    httpResponse.data = try? JSONSerialization.data(withJSONObject: statusError)
+                }
                 completionHandler(.failure(error), httpResponse)
+                return
             }
 
             let pipelineResponse = PipelineResponse(
@@ -128,5 +137,10 @@ public class URLSessionTransport: TransportStage {
                 completionHandler(.success(pipelineResponse), httpResponse)
             }
         }.resume()
+    }
+
+    internal struct StatusCodeError: Codable, Swift.Error {
+        public let status: Int32?
+        public let message: String?
     }
 }
