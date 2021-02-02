@@ -15,6 +15,8 @@
 		D50EC10B25AD1DDC00FA1177 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D50EC10925AD1DDC00FA1177 /* LaunchScreen.storyboard */; };
 		D576D4F125AE520F007468C7 /* AzureCommunicationChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D576D4F025AE520F007468C7 /* AzureCommunicationChat.framework */; };
 		D576D4F725AE52B5007468C7 /* AzureCommunicationSignaling.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D576D4F625AE52B5007468C7 /* AzureCommunicationSignaling.framework */; };
+		D5DB4A5025C139A6003396EB /* MyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DB4A4E25C139A6003396EB /* MyTableViewCell.swift */; };
+		D5DB4A5125C139A6003396EB /* MyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D5DB4A4F25C139A6003396EB /* MyTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		D50EC10C25AD1DDC00FA1177 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D576D4F025AE520F007468C7 /* AzureCommunicationChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AzureCommunicationChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D576D4F625AE52B5007468C7 /* AzureCommunicationSignaling.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AzureCommunicationSignaling.framework; sourceTree = "<group>"; };
+		D5DB4A4E25C139A6003396EB /* MyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTableViewCell.swift; sourceTree = "<group>"; };
+		D5DB4A4F25C139A6003396EB /* MyTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +74,8 @@
 				D50EC10725AD1DDC00FA1177 /* Assets.xcassets */,
 				D50EC10925AD1DDC00FA1177 /* LaunchScreen.storyboard */,
 				D50EC10C25AD1DDC00FA1177 /* Info.plist */,
+				D5DB4A4E25C139A6003396EB /* MyTableViewCell.swift */,
+				D5DB4A4F25C139A6003396EB /* MyTableViewCell.xib */,
 			);
 			path = SignalingTestApp;
 			sourceTree = "<group>";
@@ -141,6 +147,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D50EC10B25AD1DDC00FA1177 /* LaunchScreen.storyboard in Resources */,
+				D5DB4A5125C139A6003396EB /* MyTableViewCell.xib in Resources */,
 				D50EC10825AD1DDC00FA1177 /* Assets.xcassets in Resources */,
 				D50EC10625AD1DDA00FA1177 /* Main.storyboard in Resources */,
 			);
@@ -154,6 +161,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D50EC10325AD1DDA00FA1177 /* ViewController.swift in Sources */,
+				D5DB4A5025C139A6003396EB /* MyTableViewCell.swift in Sources */,
 				D50EC0FF25AD1DDA00FA1177 /* AppDelegate.swift in Sources */,
 				D50EC10125AD1DDA00FA1177 /* SceneDelegate.swift in Sources */,
 			);
